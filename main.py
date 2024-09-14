@@ -1,16 +1,10 @@
-import sys
-from interface import MyWidget
-from PySide6 import QtCore, QtWidgets, QtGui
+from interface import App
 
 
 def main():
-    app = QtWidgets.QApplication([])
+    window = App()
 
-    widget = MyWidget()
-    widget.resize(800, 600)
-    widget.show()
-
-    sys.exit(app.exec())
+    window.mainloop()
 
 
 if __name__ == '__main__':
