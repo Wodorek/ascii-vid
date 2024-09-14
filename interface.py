@@ -1,18 +1,24 @@
-import tkinter as tk
-from tkinter import ttk
+import sys
+import random
+from PySide6 import QtCore, QtWidgets, QtGui
 
 
-def create_interface():
-    window = tk.Tk()
-    window.geometry('800x600')
-    window.title('Ascii converter')
+class MyWidget(QtWidgets.QWidget):
+    def __init__(self):
+        super().__init__()
 
-    selectBtn = ttk.Button(window, text='Select Video')
-    processBtn = ttk.Button(window, text='Process Video')
-    saveBtn = ttk.Button(window, text='Save Video')
+        self.hello = ["Hallo Welt", "Hei maailma", "Hola Mundo", "Привет мир"]
 
-    selectBtn.pack(side='left')
-    processBtn.pack(side='left')
-    saveBtn.pack(side='left')
+        self.button = QtWidgets.QPushButton("Click me!")
+        self.text = QtWidgets.QLabel("Hello World",
+                                     alignment=QtCore.Qt.AlignCenter)
 
-    return window
+        self.layout = QtWidgets.QVBoxLayout(self)
+        self.layout.addWidget(self.text)
+        self.layout.addWidget(self.button)
+
+        self.button.clicked.connect(self.magic)
+
+    @QtCore.Slot()
+    def magic(self):
+        self.text.setText(random.choice(self.hello))
