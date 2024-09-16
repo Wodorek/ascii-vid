@@ -1,22 +1,27 @@
 import customtkinter as ctk
 from PIL import Image
+from interface.slider import Slider
 
 
 class Window(ctk.CTk):
     def __init__(self):
         super().__init__()
 
-        self.geometry('800x600')
+        # main window config
+        self.geometry('1000x800')
         self.title('Ascii vid')
         self.resizable(False, False)
-
         self.columnconfigure((0, 1, 2, 3), weight=1)
         self.rowconfigure((0, 1, 2, 3, 4, 5, 6), weight=1)
 
-        slider_1 = ctk.CTkSlider(self, from_=0, to=100)
-        slider_2 = ctk.CTkSlider(self, from_=0, to=100)
-        slider_3 = ctk.CTkSlider(self, from_=0, to=100)
-
+        # create sliders
+        slider_1 = Slider(master=self,
+                          text='witam', color=self._fg_color)
+        slider_2 = Slider(master=self,
+                          text='konsumenta', color=self._fg_color)
+        slider_3 = Slider(master=self,
+                          text='bozego', color=self._fg_color)
+        # place sliders
         slider_1.grid(row=1, column=0, columnspan=2)
         slider_2.grid(row=2, column=0, columnspan=2)
         slider_3.grid(row=3, column=0, columnspan=2)
