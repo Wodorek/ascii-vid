@@ -1,8 +1,8 @@
-from interface import App
+from interface.Window import Window
 
 
 def main():
-    window = App()
+    window = Window()
 
     window.mainloop()
 
