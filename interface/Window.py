@@ -4,7 +4,7 @@ from interface.slider import Slider
 
 
 class Window(ctk.CTk):
-    def __init__(self):
+    def __init__(self, process_func):
         super().__init__()
 
         # main window config
@@ -13,6 +13,7 @@ class Window(ctk.CTk):
         self.resizable(False, False)
         self.columnconfigure((0, 1, 2, 3), weight=1)
         self.rowconfigure((0, 1, 2, 3, 4, 5, 6), weight=1)
+        self.selected_file = None
 
         # create sliders
         slider_1 = Slider(master=self,
@@ -30,7 +31,7 @@ class Window(ctk.CTk):
         # preview.thumbnail((300, 300), Image.Resampling.LANCZOS)
 
         image = ctk.CTkImage(
-            light_image=preview, size=(300, 300))
+            light_image=preview, size=(350, 350))
 
         label = ctk.CTkLabel(
             self, image=image, text='', )
@@ -43,10 +44,17 @@ class Window(ctk.CTk):
         buttons_frame.grid(row=6, column=0,
                            columnspan=4, sticky='nswe', )
 
-        button_1 = ctk.CTkButton(master=buttons_frame, text="Open Video")
-        button_2 = ctk.CTkButton(master=buttons_frame, text="Process Video")
-        button_3 = ctk.CTkButton(master=buttons_frame, text="Save Video")
+        button_1 = ctk.CTkButton(master=buttons_frame,
+                                 text="Open Video", command=self.select_file)
+        button_2 = ctk.CTkButton(master=buttons_frame,
+                                 text="Process Video", command=process_func)
+        button_3 = ctk.CTkButton(master=buttons_frame,
+                                 text="Save Video")
 
         button_1.grid(row=1, column=0,)
         button_2.grid(row=1, column=1,)
         button_3.grid(row=1, column=2,)
+
+    def select_file(self):
+        file = ctk.filedialog.askopenfilename()
+        self.selected_file = file

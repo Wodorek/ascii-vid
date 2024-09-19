@@ -1,9 +1,9 @@
 from interface.Window import Window
+from src.process_frame import process_frame
 
 
 def main():
-    window = Window()
-
+    window = Window(process_frame)
     window.mainloop()
 
 
