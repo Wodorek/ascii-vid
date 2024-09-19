@@ -1,2 +1,9 @@
+from PIL import Image
+
+
 def process_frame(frame):
-    print('hello')
+    img = Image.open(frame).convert('RGBA')
+
+    pixels = img.getdata()
+
+    print(pixels[1])
