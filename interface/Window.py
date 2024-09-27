@@ -13,7 +13,8 @@ class Window(ctk.CTk):
         self.resizable(False, False)
         self.columnconfigure((0, 1, 2, 3), weight=1)
         self.rowconfigure((0, 1, 2, 3, 4, 5, 6), weight=1)
-        self.selected_file = None
+        # change later to None
+        self.selected_file = './apple.jpg'
         self.select_btn = None
         self.process_btn = None
 
