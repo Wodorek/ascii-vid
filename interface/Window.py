@@ -4,7 +4,7 @@ from interface.slider import Slider
 
 
 class Window(ctk.CTk):
-    def __init__(self, process_func):
+    def __init__(self, img_processor):
         super().__init__()
 
         # main window config
@@ -39,7 +39,7 @@ class Window(ctk.CTk):
                                  text="Preview Frame", command=self.display_preview, state='disabled')
         self.select_btn = button_2
         button_3 = ctk.CTkButton(buttons_frame,
-                                 text="Save Video", command=lambda: self.process_and_save(process_func))
+                                 text="Save Video", command=lambda: self.process_and_save(img_processor))
         self.process_btn = button_3
 
         button_1.grid(row=1, column=0,)
@@ -70,9 +70,12 @@ class Window(ctk.CTk):
 
         img.show()
 
-    def process_and_save(self, process_func):
+    def process_and_save(self, img_processor):
+
         if not self.selected_file:
             print('no file selected')
             return
 
-        processed = process_func(self.selected_file)
+        processor = img_processor(self.selected_file)
+
+        processor.process_frame()

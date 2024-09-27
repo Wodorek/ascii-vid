@@ -1,9 +1,23 @@
-from PIL import Image
+from PIL import Image, ImageDraw
 
 
-def process_frame(frame):
-    img = Image.open(frame).convert('RGBA')
+class ImageProcessor():
+    def __init__(self, img):
+        self.img = Image.open(img).convert('RGBA')
 
-    pixels = img.getdata()
+    def process_frame(self):
 
-    print(pixels[1])
+        pixels = list(self.img.getdata())
+
+        width, height = self.img.size
+
+        pixels = [pixels[i * width:(i+1) * width] for i in range(height)]
+
+        self.img.show()
+
+    def turn_into_tiles(self, pixels):
+        # tiles are laid as  1 2 3
+        #                    4 5 6
+        #                    7 8 9
+
+        pass
