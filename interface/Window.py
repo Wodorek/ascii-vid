@@ -14,7 +14,7 @@ class Window(ctk.CTk):
         self.columnconfigure((0, 1, 2, 3), weight=1)
         self.rowconfigure((0, 1, 2, 3, 4, 5, 6), weight=1)
         # change later to None
-        self.selected_file = './apple.jpg'
+        self.selected_file = './rect.png'
         self.select_btn = None
         self.process_btn = None
 

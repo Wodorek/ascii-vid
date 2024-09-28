@@ -18,7 +18,7 @@ class ImageProcessor():
         self.start_len = len(pixels)
         print('original len', len(pixels))
 
-        pixels.shape = (-1, self.height)
+        pixels.shape = (-1, self.width)
 
         # self.img.show()
 
@@ -33,10 +33,15 @@ class ImageProcessor():
         x_diff = self.width % self.tile_size
         y_diff = self.height % self.tile_size
 
-        cut_pixels = np.resize(
-            cut_pixels, (len(cut_pixels)-y_diff, len(cut_pixels[1])-x_diff))
+        remove_x = sorted(
+            list(range(len(pixels[0])-x_diff, len(pixels[0]))), reverse=True)
 
-        # remove loging later
+        remove_y = sorted(
+            list(range(len(pixels)-y_diff, len(pixels))), reverse=True)
+
+        cut_pixels = np.delete(cut_pixels, remove_y, axis=0)
+        cut_pixels = np.delete(cut_pixels, remove_x, axis=1)
+
         print(f'original height {len(pixels)}, new height {
             len(cut_pixels)} ydiff was {y_diff}')
         print(' ')
@@ -54,16 +59,6 @@ class ImageProcessor():
 
         tiles = []
 
-        resized_pixels = np.array(resized_pixels)
-
-        resized_pixels = np.array(
-            [[1, 1, 2, 2, 3, 3],
-             [1, 1, 2, 2, 3, 3],
-             [4, 4, 5, 5, 6, 6],
-             [4, 4, 5, 5, 6, 6],
-             [7, 7, 8, 8, 9, 9],
-             [7, 7, 8, 8, 9, 9]])
-
         for i in range(0, len(resized_pixels), self.tile_size):
 
             for j in range(0, len(resized_pixels[0]), self.tile_size):
@@ -73,10 +68,7 @@ class ImageProcessor():
                     slice)
 
                 tiles.append(averaged)
-        print(tiles)
-        tilesArr = np.array(tiles, dtype='i')
-        tilesArr.shape = (3, 3)
-        print(tilesArr)
+
         return tiles
 
     def avg_in_greyscale(self, pixels):
@@ -85,34 +77,28 @@ class ImageProcessor():
         flat = pixels.flatten()
 
     def avg_in_color(self, pixels):
-        print(pixels)
 
-        # R = 0
-        # G = 0
-        # B = 0
+        R = 0
+        G = 0
+        B = 0
 
         flat = pixels.flatten()
-        print(len(flat))
-        return int(flat[0])
 
-        # for item in flat:
-        #     # R += item
-        #     R += item[0]
-        #     G += item[1]
-        #     B += item[2]
+        for item in flat:
+            R += item[0]
+            G += item[1]
+            B += item[2]
 
-        # # return int(R // (self.tile_size * self.tile_size))
-        # return (int(R//len(flat)), int(G//len(flat)), int(B//len(flat)))
+        return (int(R//len(flat)), int(G//len(flat)), int(B//len(flat)))
 
     # to be removed after finished
     def test_pixelation(self, pixels):
-        pass
-        # print(f'original pixels len {
-        #       self.start_len} \n new pixel len {len(pixels)}, ratio is {self.ratio}')
 
-        # img = Image.new("RGB", (996//2, 664//2))
-        # img.putdata(pixels)
-        # img.show()
+        print(f'original pixels len {
+              self.start_len} \n new pixel len {len(pixels)}, ratio is {self.ratio}')
 
-        # RATIO, YOU NEED THE WIDTH to HEIGHT RATIO!!!
-        # TRY GREYSCALE FIRST
+        parr = np.array(pixels, dtype='uint8,uint8,uint8')
+        parr = np.ndarray.reshape(parr, (-1, self.width//2))
+
+        testim = Image.fromarray(parr, "RGB")
+        testim.save('./testim.png',)
