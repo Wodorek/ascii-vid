@@ -1,9 +1,9 @@
 from interface.Window import Window
-from src.process_frame import ImageProcessor
+from src.Video_Processor import VideoProcessor
 
 
 def main():
-    window = Window(ImageProcessor)
+    window = Window(VideoProcessor)
     window.mainloop()
 
 
