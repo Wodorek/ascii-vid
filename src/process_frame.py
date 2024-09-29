@@ -4,7 +4,7 @@ import copy
 
 
 class ImageProcessor():
-    def __init__(self, img, tile_size=2):
+    def __init__(self, img, tile_size=60):
         self.img = Image.open(img).convert('RGB')
         self.height = self.img.size[1]
         self.width = self.img.size[0]
@@ -98,7 +98,7 @@ class ImageProcessor():
               self.start_len} \n new pixel len {len(pixels)}, ratio is {self.ratio}')
 
         parr = np.array(pixels, dtype='uint8,uint8,uint8')
-        parr = np.ndarray.reshape(parr, (-1, self.width//2))
+        parr = np.ndarray.reshape(parr, (-1, self.width//self.tile_size))
 
         testim = Image.fromarray(parr, "RGB")
         testim.save('./testim.png',)
