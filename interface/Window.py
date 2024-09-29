@@ -1,5 +1,4 @@
 import customtkinter as ctk
-from PIL import Image
 from interface.slider import Slider
 
 
@@ -59,17 +58,17 @@ class Window(ctk.CTk):
             print('no file selected')
             return
 
-        img = Image.open(self.selected_file)
+        # img = Image.open(self.selected_file)
 
         # processing function goes HERE
 
         supported_formats = ['JPG', 'JPEG', 'PNG']
 
-        if img.format not in supported_formats:
-            print('format not supported')
-            return
+        # if img.format not in supported_formats:
+        #     print('format not supported')
+        #     return
 
-        img.show()
+        # img.show()
 
     def process_and_save(self, img_processor):
 
