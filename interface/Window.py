@@ -1,10 +1,10 @@
 import customtkinter as ctk
-import cv2
-from interface.slider import Slider
+from src.Video_Processor import VideoProcessor
+# from interface.Slider import Slider
 
 
 class Window(ctk.CTk):
-    def __init__(self, video_processor):
+    def __init__(self):
         super().__init__()
 
         # main window config
@@ -13,10 +13,9 @@ class Window(ctk.CTk):
         self.resizable(False, False)
         self.columnconfigure((0, 1, 2, 3), weight=1)
         self.rowconfigure((0, 1, 2, 3, 4, 5, 6), weight=1)
-        # change later to None
-        self.selected_file = './rect.png'
         self.select_btn = None
         self.process_btn = None
+        self.video_processor = VideoProcessor()
 
         # create sliders
         # slider_1 = Slider(self, text='witam', color=self._fg_color)
@@ -32,7 +31,7 @@ class Window(ctk.CTk):
         buttons_frame = ctk.CTkFrame(master=self, fg_color=self._fg_color)
         buttons_frame.columnconfigure((0, 1, 2), weight=1)
         buttons_frame.rowconfigure((0, 1, 2), weight=1)
-        buttons_frame.grid(row=6, column=0, columnspan=4, sticky='nswe', )
+        buttons_frame.grid(row=6, column=0, columnspan=4, sticky='nswe')
 
         button_1 = ctk.CTkButton(buttons_frame,
                                  text="Open Video", command=self.select_file)
@@ -40,7 +39,7 @@ class Window(ctk.CTk):
                                  text="Preview Frame", command=self.display_preview, state='disabled')
         self.select_btn = button_2
         button_3 = ctk.CTkButton(buttons_frame,
-                                 text="Save Video", command=lambda: self.process_and_save(video_processor))
+                                 text="Save Video", command=self.process_and_save)
         self.process_btn = button_3
 
         # remove before release
@@ -54,54 +53,19 @@ class Window(ctk.CTk):
     def select_file(self):
         file = ctk.filedialog.askopenfilename(
             filetypes=[('MP4 files', '*.mp4'), ('AVI files', '*.avi')])
-        self.selected_file = file
+
+        self.video_processor.select_video(file)
+
         self.select_btn.configure(True, state='normal')
         self.process_btn.configure(True, state='normal')
 
     def display_preview(self):
-        if not self.selected_file:
-            print('no file selected')
-            return
 
+        self.video_processor.show_video()
         supported_formats = ['MP4', 'AVI']
 
-        # Create a VideoCapture object and read from input file
-        cap = cv2.VideoCapture(self.selected_file)
-
-        # Check if camera opened successfully
-        if (cap.isOpened() == False):
-            print("Error opening video file")
-
-        # Read until video is completed
-        while (cap.isOpened()):
-
-            # Capture frame-by-frame
-            ret, frame = cap.read()
-            if ret == True:
-                # Display the resulting frame
-                cv2.imshow('Frame', frame)
-
-            # Press Q on keyboard to exit
-                if cv2.waitKey(25) & 0xFF == ord('q'):
-                    break
-
-        # Break the loop
-            else:
-                break
-
-        # When everything done, release
-        # the video capture object
-        cap.release()
-
-        # Closes all the frames
-        cv2.destroyAllWindows()
-
-    def process_and_save(self, img_processor):
+    def process_and_save(self):
 
         if not self.selected_file:
             print('no file selected')
             return
-
-        processor = img_processor(self.selected_file)
-
-        processor.process_frame()
